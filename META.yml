@@ -1,6 +1,6 @@
 ---
 name: ylib
-version: 0.001
+version: 0.002
 author:
   - 'David Golden <dagolden@cpan.org>'
 abstract: Add paths to @INC from a config file
@@ -20,7 +20,7 @@ build_requires:
 provides:
   ylib:
     file: lib/ylib.pm
-    version: 0.001
+    version: 0.002
 generated_by: Module::Build version 0.32
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html

@@ -8,7 +8,7 @@ ylib - Add paths to @INC from a config file
 
 =head1 VERSION
 
-This documentation describes version 0.001.
+This documentation describes version 0.002.
 
 =head1 SYNOPSIS
 
@@ -26,6 +26,8 @@ The ylib module adds paths to C<<< @INC >>> from a configuration file named C<<<
 in which each line represents a library path.  The C<<< .mylib >>> file can be either
 in the current directory andE<sol>or in the user's home directory.  It is equivalent
 to calling C<<< 'use lib' >>> on each path.
+
+Note: C<<< ylib >>> will issue a warning if a path in C<<< .mylib >>> can't be found.
 
 =head1 USAGE
 
@@ -49,15 +51,21 @@ C<<< .mylib >>> file with the appropriate path:
    $ perl -Mylib Build.PL
    $ Build && Build test
 
-That's easier and shorter than using PERL5LIB on the command line, and it
+That's easier and shorter than using C<<< PERL5LIB >>> on the command line, and it
 scales better as the number of libraries increases.
 
-Note: C<<< ylib >>> will issue a warning if a path in C<<< .mylib >>> can't be found.
+In the example above, the C<<< Build >>> script preserve C<<< @INC >>> including the effect
+of C<<< -Mylib >>> when it was created.  This is not the case with C<<< Makefile.PL >>> or
+C<<< prove >>>, in which case, C<<< PERL5OPT >>> might be an alternative approach for using
+C<<< -Mylib >>>:
+
+   $ export PERL5OPT=-Mylib
+   $ prove
 
 =head1 BUGS
 
-Please report any bugs or feature requests using the CPAN Request Tracker  
-web interface at L<http://rt.cpan.org/Dist/Display.html?Queue=ylib>
+Please report any bugs or feature requests using the CPAN Request Tracker web
+interface at L<http://rt.cpan.org/Dist/Display.html?Queue=ylib>
 
 When submitting a bug or request, please include a test-file or a patch to an
 existing test-file that illustrates the bug or desired feature.

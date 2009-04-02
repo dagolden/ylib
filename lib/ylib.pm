@@ -12,7 +12,7 @@ use Path::Class;
 
 require lib;
 
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 $VERSION = eval $VERSION; ## no critic
 
 my $name = '.mylib';
@@ -68,6 +68,8 @@ in which each line represents a library path.  The {.mylib} file can be either
 in the current directory and/or in the user's home directory.  It is equivalent
 to calling {'use lib'} on each path.
 
+Note: {ylib} will issue a warning if a path in {.mylib} can't be found.
+
 = USAGE
 
 Occasionally, it's useful to customize {@INC} on a per-directory basis without
@@ -90,15 +92,21 @@ The code in Foo-Bar depends on code in Baz-Bam.  So in Foo-Bar, create a
   $ perl -Mylib Build.PL
   $ Build && Build test
 
-That's easier and shorter than using PERL5LIB on the command line, and it
+That's easier and shorter than using {PERL5LIB} on the command line, and it
 scales better as the number of libraries increases.
 
-Note: {ylib} will issue a warning if a path in {.mylib} can't be found.
+In the example above, the {Build} script preserve {@INC} including the effect
+of {-Mylib} when it was created.  This is not the case with {Makefile.PL} or
+{prove}, in which case, {PERL5OPT} might be an alternative approach for using
+{-Mylib}:
+
+  $ export PERL5OPT=-Mylib
+  $ prove
 
 = BUGS
 
-Please report any bugs or feature requests using the CPAN Request Tracker  
-web interface at [http://rt.cpan.org/Dist/Display.html?Queue=ylib]
+Please report any bugs or feature requests using the CPAN Request Tracker web
+interface at [http://rt.cpan.org/Dist/Display.html?Queue=ylib]
 
 When submitting a bug or request, please include a test-file or a patch to an
 existing test-file that illustrates the bug or desired feature.

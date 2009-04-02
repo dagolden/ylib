@@ -2,7 +2,7 @@ NAME
     ylib - Add paths to @INC from a config file
 
 VERSION
-    This documentation describes version 0.001.
+    This documentation describes version 0.002.
 
 SYNOPSIS
        # in .mylib file
@@ -18,6 +18,8 @@ DESCRIPTION
     ".mylib" in which each line represents a library path. The ".mylib" file
     can be either in the current directory and/or in the user's home
     directory. It is equivalent to calling 'use lib' on each path.
+
+    Note: "ylib" will issue a warning if a path in ".mylib" can't be found.
 
 USAGE
     Occasionally, it's useful to customize @INC on a per-directory basis
@@ -41,10 +43,16 @@ USAGE
        $ perl -Mylib Build.PL
        $ Build && Build test
 
-    That's easier and shorter than using PERL5LIB on the command line, and
+    That's easier and shorter than using "PERL5LIB" on the command line, and
     it scales better as the number of libraries increases.
 
-    Note: "ylib" will issue a warning if a path in ".mylib" can't be found.
+    In the example above, the "Build" script preserve @INC including the
+    effect of "-Mylib" when it was created. This is not the case with
+    "Makefile.PL" or "prove", in which case, "PERL5OPT" might be an
+    alternative approach for using "-Mylib":
+
+       $ export PERL5OPT=-Mylib
+       $ prove
 
 BUGS
     Please report any bugs or feature requests using the CPAN Request
