@@ -7,9 +7,35 @@
 package ylib;
 use strict;
 use warnings;
+use File::HomeDir 0.86 ();
+use Path::Class;
+
+require lib;
 
 our $VERSION = '0.001';
 $VERSION = eval $VERSION; ## no critic
+
+my $name = '.mylib';
+
+sub import {
+  my $class = shift;
+  my @configs = map { file($_, $name) } ( File::HomeDir->my_home(), '.' );
+  for my $f (@configs) {
+    next unless  -r $f;
+    my $fh = $f->openr;
+    while ( my $path = <$fh> ) {
+      chomp $path;
+      my $dir = dir($path);
+      if ( -d $dir ) {
+        lib->import( "$dir" );
+      }
+      else {
+        warn "lib '$dir' was not found. skipping it\n";
+      }
+    }
+  }
+  return 1;
+}
 
 1;
 
@@ -19,7 +45,7 @@ __END__
 
 = NAME
 
-ylib - Add abstract here
+ylib - Add paths to @INC from a config file
 
 = VERSION
 
@@ -27,13 +53,47 @@ This documentation describes version %%VERSION%%.
 
 = SYNOPSIS
 
-    use ylib;
+  # in .mylib file
+  /home/david/some/library/path
+  
+  # from the command line
+  $ perl -Mylib -E "print @INC"
+  /home/david/some/library/path
+  ...
 
 = DESCRIPTION
 
+The ylib module adds paths to {@INC} from a configuration file named '{.mylib}'
+in which each line represents a library path.  The {.mylib} file can be either
+in the current directory and/or in the user's home directory.  It is equivalent
+to calling 'use lib' on each path.
 
 = USAGE
 
+Occasionally, it's useful to customize {@INC} on a per-directory basis without
+changing the global {PERL5LIB} environment variable.  For example, when
+developing or testing code that requires uninstalled code in an adjancent
+directory, one could create a {.mylib} file that adds the necessary path.
+
+For example, consider this directory tree with two Perl distributions, Foo-Bar
+and Baz-Bam:
+
+  /projects
+      Foo-Bar/
+      Baz-Bam/
+
+The code in Foo-Bar depends on code in Baz-Bam.  So in Foo-Bar, create a
+{.mylib} file with the appropriate path:
+
+  $ cd Foo-Bar
+  $ echo '../Baz-Bam/lib' > .mylib
+  $ perl -Mylib Build.PL
+  $ Build && Build test
+
+That's easier and shorter than using PERL5LIB on the command line, and it
+scales better as the number of libraries increases.
+
+Note: {ylib} will issue a warning if a path in {.mylib} can't be found.
 
 = BUGS
 
@@ -45,6 +105,9 @@ existing test-file that illustrates the bug or desired feature.
 
 = SEE ALSO
 
+* [lib]
+* [rlib]
+* [local::lib]
 
 = AUTHOR
 
