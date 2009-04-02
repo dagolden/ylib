@@ -16,16 +16,16 @@ This documentation describes version 0.001.
    /home/david/some/library/path
  
    # from the command line
-   $ perl -Mylib -E "print @INC"
+   $ perl -Mylib -E 'say for @INC'
    /home/david/some/library/path
    ...
 
 =head1 DESCRIPTION
 
-The ylib module adds paths to C<<< @INC >>> from a configuration file named '{.mylib}'
+The ylib module adds paths to C<<< @INC >>> from a configuration file named C<<< .mylib >>>
 in which each line represents a library path.  The C<<< .mylib >>> file can be either
 in the current directory andE<sol>or in the user's home directory.  It is equivalent
-to calling 'use lib' on each path.
+to calling C<<< 'use lib' >>> on each path.
 
 =head1 USAGE
 
@@ -37,7 +37,7 @@ directory, one could create a C<<< .mylib >>> file that adds the necessary path.
 For example, consider this directory tree with two Perl distributions, Foo-Bar
 and Baz-Bam:
 
-   /projects
+   ~/projects/
        Foo-Bar/
        Baz-Bam/
 

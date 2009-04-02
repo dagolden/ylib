@@ -57,16 +57,16 @@ This documentation describes version %%VERSION%%.
   /home/david/some/library/path
   
   # from the command line
-  $ perl -Mylib -E "print @INC"
+  $ perl -Mylib -E 'say for @INC'
   /home/david/some/library/path
   ...
 
 = DESCRIPTION
 
-The ylib module adds paths to {@INC} from a configuration file named '{.mylib}'
+The ylib module adds paths to {@INC} from a configuration file named {.mylib}
 in which each line represents a library path.  The {.mylib} file can be either
 in the current directory and/or in the user's home directory.  It is equivalent
-to calling 'use lib' on each path.
+to calling {'use lib'} on each path.
 
 = USAGE
 
@@ -78,7 +78,7 @@ directory, one could create a {.mylib} file that adds the necessary path.
 For example, consider this directory tree with two Perl distributions, Foo-Bar
 and Baz-Bam:
 
-  /projects
+  ~/projects/
       Foo-Bar/
       Baz-Bam/
 
