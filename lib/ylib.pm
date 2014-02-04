@@ -13,20 +13,20 @@ require lib;
 my $name = '.mylib';
 
 sub import {
-  my $class = shift;
-  my @configs = map { path($_, $name) } ( File::HomeDir->my_home(), '.' );
-  for my $f (@configs) {
-    next unless -r $f;
-    for my $dir ( $f->lines( {chomp=>1} ) ) {
-      if ( -d $dir ) {
-        lib->import( "$dir" );
-      }
-      else {
-        warn "lib '$dir' was not found. skipping it\n";
-      }
+    my $class = shift;
+    my @configs = map { path( $_, $name ) } ( File::HomeDir->my_home(), '.' );
+    for my $f (@configs) {
+        next unless -r $f;
+        for my $dir ( $f->lines( { chomp => 1 } ) ) {
+            if ( -d $dir ) {
+                lib->import("$dir");
+            }
+            else {
+                warn "lib '$dir' was not found. skipping it\n";
+            }
+        }
     }
-  }
-  return 1;
+    return 1;
 }
 
 1;
