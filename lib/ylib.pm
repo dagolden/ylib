@@ -8,7 +8,7 @@ package ylib;
 use strict;
 use warnings;
 use File::HomeDir 0.86 ();
-use Path::Class;
+use Path::Tiny;
 
 require lib;
 
@@ -19,13 +19,10 @@ my $name = '.mylib';
 
 sub import {
   my $class = shift;
-  my @configs = map { file($_, $name) } ( File::HomeDir->my_home(), '.' );
+  my @configs = map { path($_, $name) } ( File::HomeDir->my_home(), '.' );
   for my $f (@configs) {
-    next unless  -r $f;
-    my $fh = $f->openr;
-    while ( my $path = <$fh> ) {
-      chomp $path;
-      my $dir = dir($path);
+    next unless -r $f;
+    for my $dir ( $f->lines( {chomp=>1} ) ) {
       if ( -d $dir ) {
         lib->import( "$dir" );
       }
