@@ -8,7 +8,7 @@ use strict;
 use warnings;
 
 use Test::More;
-use File::pushd qw/tempd pushd/;
+use File::pushd 1.00 qw/tempd pushd/;
 use File::Copy qw/copy/;
 use File::Basename qw/basename dirname/;
 use Path::Tiny;
